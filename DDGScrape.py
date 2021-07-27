@@ -57,7 +57,7 @@ def save_image(path, urls, image_name="image"):
         raise TypeError("Error: Input URL format needs to be a string or a list of strings")
 
 def search_and_save(path, query, image_name="image"):
-    """ Searches and then saves all images at chosen path with image_name as base name"""
+    """ Searches and then saves all images at chosen path with image_name as the base name"""
     imgs = list(search(query))
     save_image(path, imgs, image_name=image_name)
     
