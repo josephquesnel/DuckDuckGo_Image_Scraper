@@ -1,23 +1,24 @@
-""" This Module uses selenium to get images and image url's from Duck Duck Go's image search."""
+""" This Module uses selenium to get images and image url's from Duck Duck Go's image search. Only works with brave and chrome browser currently"""
 
 from urllib.parse import unquote
 from time import sleep
 from html import escape
 from selenium import webdriver
-import requests
+from requests import get as requests_get
 
-
-
-
-def search(query):
+def search(query, brave=False):
+    """ Query Duck Duck Go to get a generator list of URLs for the queries images, if you use Brave browser, 
+    set brave=True to get selenium to work, otherwise only works with Chrome"""
     
+    # Use default chrome options if not using brave
     option = webdriver.ChromeOptions()
-    option.binary_location = r"C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
+    if brave: 
+        option.binary_location = r"C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
     driver = webdriver.Chrome(options=option)
     
     query = escape(query)
     
-    # For one word queries it will be ok, for complex ones should encode first
+    # Should work for all queries
     driver.get(f'https://duckduckgo.com/?q={query}&t=brave&iar=images&iax=images&ia=images')
     sleep(3)
 
@@ -39,7 +40,7 @@ def save_image(path, urls, image_name="image"):
         
     # For individual img URL's
     if type(urls) == type(str()):
-        img_data = requests.get(urls).content
+        img_data = requests_get(urls).content
         with open(f'{path}{image_name}.jpg', 'wb') as handler:
             handler.write(img_data)
             handler.close()
@@ -47,21 +48,21 @@ def save_image(path, urls, image_name="image"):
     # For lists of img URL's
     elif type(urls) in (type(list()), type(tuple())):
         for i, url in enumerate(urls):
-            img_data = requests.get(url).content
+            img_data = requests_get(url).content
             with open(f'{path}{image_name}{i}.jpg', 'wb') as handler:
                 handler.write(img_data)
                 handler.close()
     
-    # Reject it if its not a tuple, list or string. I dont want the stress.
+    # Reject it if its not a tuple, list or string.
     else:
         raise TypeError("Error: Input URL format needs to be a string or a list of strings")
 
-def search_and_save(path, query, image_name="image"):
-    """ Searches and then saves all images at chosen path with image_name as the base name"""
-    imgs = list(search(query))
+def search_and_save(path, query, image_name="image", brave=False):
+    """All in one, Searches and then saves all images at chosen path with image_name as the base name, set brave to true if you use brave browser"""
+    imgs = list(search(query, brave=brave))
     save_image(path, imgs, image_name=image_name)
     
 if __name__ == '__main__':
     from pprint import pprint
-    imgs_urls = list(search('boy face'))
+    imgs_urls = list(search('face'))
     pprint(imgs_urls)
