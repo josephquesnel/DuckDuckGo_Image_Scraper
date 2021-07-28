@@ -4,7 +4,7 @@ This python module is just meant to make downloading images from duck duck go mu
 You can use the search function to generate a list of URL's from the search query.
 This query is parsed so treat the search as you would in duckduckgo.
 
-Currently only works if you have Chrome or Brave browser installed
+Currently only works if you have Chrome or Brave browser installed in default directories.
 
 It also includes a general function to save images as jpg from any input URL or URL list.
 Last it has a search_and_save() function which combines the above two for convenience.
