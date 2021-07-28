@@ -1,4 +1,4 @@
-# DDG
+# DuckDuckGo Image Scraper
 
 This python module is just meant to make downloading images from duck duck go much easier.
 You can use the search function to generate a list of URL's from the search query.
