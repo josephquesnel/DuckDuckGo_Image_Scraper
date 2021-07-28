@@ -2,7 +2,7 @@
 
 This python module is just meant to make downloading images from duck duck go much easier.
 You can use the search function to generate a list of URL's from the search query.
-This query is parsed so treat the search as you would do it in duckduckgo.
+This query is parsed so treat the search as you would in duckduckgo.
 
 Currently only works if you have Chrome or Brave browser installed
 
