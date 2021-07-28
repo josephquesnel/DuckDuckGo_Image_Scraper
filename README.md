@@ -10,5 +10,5 @@ It also includes a general function to save images as jpg from any input URL or 
 Last it has a search_and_save() function which combines the query & save for convenience.
 
 Note the standard DuckDuckGo image search contains about 100 image URLs, so if you want less 
-than that it can be done by using the query and save functions separately and just modifying 
-the query list to your liking.
+than that, do not use the combined function. Rather, use the query and save functions separately 
+and just modify the query list to your liking before sending it to the save function.
