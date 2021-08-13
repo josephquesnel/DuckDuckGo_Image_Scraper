@@ -5,6 +5,7 @@ from time import sleep
 from html import escape
 from selenium import webdriver
 from requests import get as requests_get
+from re import findall
 
 def search(query, brave=False):
     """ Query Duck Duck Go to get a generator list of URLs for the queries images, if you use Brave browser, 
@@ -34,13 +35,16 @@ def search(query, brave=False):
     
     driver.close()
     
-def save_image(path, urls, image_name="image"):
+def save_image(path, urls, image_name="image", original_name=False):
     """ Saves image from url to path under the image name. A list of URL's is saved as image_name[i] where i is the index in the list
         path works relative to current path or by absolute path, in both cases exclude the final backslash or the path wont work"""
-        
+    
+
     # For individual img URL's
     if type(urls) == type(str()):
         img_data = requests_get(urls).content
+        if original_name==True:
+                image_name= findall("[0-9a-z.\-_%,&#]+.jpg", urls)[0][:-4]
         with open(f'{path}{image_name}.jpg', 'wb') as handler:
             handler.write(img_data)
             handler.close()
@@ -49,6 +53,9 @@ def save_image(path, urls, image_name="image"):
     elif type(urls) in (type(list()), type(tuple())):
         for i, url in enumerate(urls):
             img_data = requests_get(url).content
+            if original_name==True:
+                image_name= findall("[0-9a-z.\-_%,&#]+.jpg", url)[0][:-4]
+                i=""
             with open(f'{path}{image_name}{i}.jpg', 'wb') as handler:
                 handler.write(img_data)
                 handler.close()
@@ -57,12 +64,11 @@ def save_image(path, urls, image_name="image"):
     else:
         raise TypeError("Error: Input URL format needs to be a string or a list of strings")
 
-def search_and_save(path, query, image_name="image", brave=False):
+def search_and_save(path, query, image_name="image", brave=False, original_name=False):
     """All in one, Searches and then saves all images at chosen path with image_name as the base name, set brave to true if you use brave browser"""
     imgs = list(search(query, brave=brave))
-    save_image(path, imgs, image_name=image_name)
+    save_image(path, imgs, image_name=image_name, original_name=original_name)
     
 if __name__ == '__main__':
-    from pprint import pprint
     imgs_urls = list(search('face'))
-    pprint(imgs_urls)
+    print(imgs_urls)
